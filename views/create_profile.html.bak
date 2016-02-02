@@ -1,0 +1,7 @@
+{{extend 'layout.html'}}
+<html>
+    <body>
+        <h1>{{=mes}}</h1>
+        {{=form}}
+    </body>    
+</html>

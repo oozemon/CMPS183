@@ -1,0 +1,5 @@
+db = DAL("sqlite://storage.sqlite")
+
+db.define_table('profile',
+                Field('first_name'),
+                Field('last_name'))
