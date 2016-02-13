@@ -5,7 +5,7 @@ def download(): return response.download(request,db)
 def call(): return service()
 ### end requires
 def index():
-    return dict(message="Mapping the world, for travlers")
+    return dict(message="Mapping the world, for travelers")
 
 def error():
     return dict()
