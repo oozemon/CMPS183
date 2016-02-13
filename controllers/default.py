@@ -19,6 +19,10 @@ def destinations_manage():
 def profile_manage():
     return dict(bla="testing")
 
+@auth.requires_login()
+def profile():
+    return redirect(URL('default','users/'+str(auth.user.id)))
+
 def users():
     """
     Display user profile
