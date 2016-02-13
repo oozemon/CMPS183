@@ -16,3 +16,8 @@ db.define_table('t_destinations',
     migrate=settings.migrate)
 
 db.define_table('t_destinations_archive',db.t_destinations,Field('current_record','reference t_destinations',readable=False,writable=False))
+
+db.define_table('follows',
+                Field('follower', 'reference auth_user'),
+                Field('folowowee', 'reference auth_user')
+                )
