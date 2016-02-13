@@ -25,10 +25,14 @@ def users():
     """
     if request.args(0) is not None:
         uid = request.args(0)
+        # TODO handle failure
         user = db.auth_user[request.args(0)]
         name = user.first_name + ' ' + user.last_name
-        context = dict(message=name)
-        return response.render('default/index.html', context)
+        followers = db(db.follows.followee==uid).select(db.follows.ALL)
+        following = db(db.follows.follower==uid).select(db.follows.ALL)
+        context = dict(name=name,followers=followers,following=following)
+        return response.render('default/users.html', context)
     else:
         # TODO do something sensible?
         return redirect(URL('default','index'))
+

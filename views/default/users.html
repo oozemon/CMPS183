@@ -1,0 +1,13 @@
+{{extend 'layout.html'}}
+
+<h1>{{=name}}</h1>
+<h2>Itineraries</h2>
+<h2>Followers</h2>
+{{for f in followers:}}
+  <li><a href="{{=f.follower.id}}">{{=f.follower.first_name}} {{=f.follower.last_name}}</a></li>
+{{pass}}
+<h2>Following</h2>
+{{for f in following:}}
+  <li><a href="{{=f.followee.id}}">{{=f.followee.first_name}} {{=f.followee.last_name}}</a></li>
+{{pass}}
+
