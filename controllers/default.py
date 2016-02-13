@@ -18,3 +18,17 @@ def destinations_manage():
 @auth.requires_login()
 def profile_manage():
     return dict(bla="testing")
+
+def users():
+    """
+    Display user profile
+    """
+    if request.args(0) is not None:
+        uid = request.args(0)
+        user = db.auth_user[request.args(0)]
+        name = user.first_name + ' ' + user.last_name
+        context = dict(message=name)
+        return response.render('default/index.html', context)
+    else:
+        # TODO do something sensible?
+        return redirect(URL('default','index'))
