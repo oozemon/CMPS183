@@ -19,5 +19,5 @@ db.define_table('t_destinations_archive',db.t_destinations,Field('current_record
 
 db.define_table('follows',
                 Field('follower', 'reference auth_user'),
-                Field('folowowee', 'reference auth_user')
+                Field('followee', 'reference auth_user')
                 )
