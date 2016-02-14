@@ -23,31 +23,6 @@ def profile_manage():
 def profile():
     return redirect(URL('default','users/'+str(auth.user.id)))
 
-# TODO this is not a great place to put this fn...
-"""
-@auth.requires_login()
-@request.restful()
-def api():
-    response.view='default/index.html'
-    def PUT(tablename, id):
-        if tablename=='follows' and db.auth_user(id) is not None:
-            db[tablename].insert(follower=auth.user.id, followee=db.auth_user(id))
-            return HTTP(200)
-        else:
-            raise HTTP(400)
-    def DELETE(tablename, fid):
-        if tablename=='follows' and db.auth_user(fid) is not None:
-            db(db.follows.follower==auth_user.id,
-               db.follows.followee==db.auth_user(fid)).delete()
-            return HTTP(200)
-        else:
-            raise HTTP(400)
-        # TODO is this failproof?
-#        return redirect(URL('users/'+request.args(1)))
-
-    return locals()
-"""
-
 @auth.requires_login()
 def follow():
     """
