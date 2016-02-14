@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 # try something like
+def testing():
+    x = 'works'
+    return locals()
+
 def index():
     form = SQLFORM.factory(Field('first_name', requires=IS_NOT_EMPTY()),
                           Field('second_name', requires=IS_NOT_EMPTY()),
@@ -7,7 +11,7 @@ def index():
                           Field('location', requires=IS_NOT_EMPTY()),
                           Field('age', requires=IS_NOT_EMPTY()),
                           Field('birth_date', 'date'),
-                          Field('profile_pic'm 'upload')).process()
+                          Field('profile_pic', 'upload')).process()
     if form.accepted:
         redirect(URL('created', vars={'first_name':form.vars.first_name}))
     elif form.errors:

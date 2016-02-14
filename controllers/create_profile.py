@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 # try something like
+def testing():
+    x = 'works'
+    return locals()
+
 def index():
     form = SQLFORM.factory(Field('first_name', requires=IS_NOT_EMPTY()),
                           Field('second_name', requires=IS_NOT_EMPTY()),

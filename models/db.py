@@ -54,9 +54,14 @@ response.form_label_separator = myconf.take('forms.separator')
 from gluon.tools import Auth, Service, PluginManager
 
 auth = Auth(db)
+
 service = Service()
 plugins = PluginManager()
-
+auth.settings.extra_fields['auth_user']= [
+  Field('gender', requires=IS_IN_SET(['Male', 'Female'], error_message='Please choose a category')),
+   Field('experance', requires=IS_IN_SET(['Beginner', 'Intermediate', 'Adventurer'], error_message='Please choose a category')),
+   Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Please enter a description')),
+   Field('picture', 'upload')]
 ## create all tables needed by auth if not custom tables
 auth.define_tables(username=False, signature=False)
 
@@ -88,9 +93,27 @@ auth.settings.reset_password_requires_verification = True
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
 
+########################################
+
+db.define_table('profile_create',
+   #Field('phone'),
+   Field('gender', requires=IS_IN_SET(['Male', 'Female'], error_message='Please choose a category')),
+   Field('experance', requires=IS_IN_SET(['Beginner', 'Intermediate', 'Adventurer'], error_message='Please choose a category')),
+   Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Please enter a description')),
+   Field('picture', 'upload'),
+   Field('email', requires=IS_EMAIL(error_message='Invalid email') ))
+
+
+#db.post.phone.requires = IS_MATCH('^\d{10}', extract=True, error_message='Telephone number should have 10 digits.')
+
+
+
+auth.enable_record_versioning(db)
 ## after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
 
 mail.settings.server = settings.email_server
 mail.settings.sender = settings.email_sender
 mail.settings.login = settings.email_login
+
+### we prepend t_ to tablenames and f_ to fieldnames for disambiguity
