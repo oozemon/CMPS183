@@ -23,6 +23,55 @@ def profile_manage():
 def profile():
     return redirect(URL('default','users/'+str(auth.user.id)))
 
+# TODO this is not a great place to put this fn...
+"""
+@auth.requires_login()
+@request.restful()
+def api():
+    response.view='default/index.html'
+    def PUT(tablename, id):
+        if tablename=='follows' and db.auth_user(id) is not None:
+            db[tablename].insert(follower=auth.user.id, followee=db.auth_user(id))
+            return HTTP(200)
+        else:
+            raise HTTP(400)
+    def DELETE(tablename, fid):
+        if tablename=='follows' and db.auth_user(fid) is not None:
+            db(db.follows.follower==auth_user.id,
+               db.follows.followee==db.auth_user(fid)).delete()
+            return HTTP(200)
+        else:
+            raise HTTP(400)
+        # TODO is this failproof?
+#        return redirect(URL('users/'+request.args(1)))
+
+    return locals()
+"""
+
+@auth.requires_login()
+def follow():
+    """
+    if request.env.method != 'POST':
+        raise HTTP(400)
+    """
+    tablename = 'follows'
+    to_follow = db.auth_user(request.args(0))
+    action = request.args(1)
+    # FIXME ensure that to-follow user exists!
+    if to_follow is not None:
+        if action == 'follow':
+            db[tablename].insert(follower=auth.user.id, followee=to_follow)
+            return HTTP(200)
+        elif action == 'unfollow':
+            db(db.follows.follower==auth.user.id,
+               db.follows.followee==to_follow).delete()
+            return HTTP(200)
+        else:
+            return HTTP(400)
+        return HTTP(200)
+    else:
+        raise HTTP(400)
+
 def users():
     """
     Display user profile

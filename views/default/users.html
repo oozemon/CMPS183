@@ -1,13 +1,46 @@
 {{extend 'layout.html'}}
 
+  {{
+  def is_following(follower, followee):
+    if db((db.follows.follower == follower) & (db.follows.followee == followee)).count():
+      return True
+    else:
+      return False
+  pass
+
+  def follow_url(follower, followee):
+    if is_following(follower, followee):
+      return URL('default', 'follow', args=[str(followee), 'unfollow'])
+    else:
+      return URL('default', 'follow', args=[str(followee), 'follow'])
+
+  pass
+  }}
+
 <h1>{{=name}}</h1>
+<!-- TODO change this -->
+  {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
+  <form method="POST" action="#" onsubmit="ajax('{{=follow_url(auth.user.id, request.args[0])}}', null)">
+  <button id="follow-btn" type="submit">
+  {{ if is_following(auth.user.id, request.args[0]): }}
+  Unfollow
+  {{ else: }}
+  Follow
+  {{ pass }}
+  </button>
+  </form>
+  {{ pass }}
+
 <h2>Itineraries</h2>
 <h2>Followers</h2>
+<ul>
 {{for f in followers:}}
   <li><a href="{{=f.follower.id}}">{{=f.follower.first_name}} {{=f.follower.last_name}}</a></li>
-{{pass}}
-<h2>Following</h2>
-{{for f in following:}}
+  {{pass}}
+</ul>
+  <h2>Following</h2>
+  <ul>
+  {{for f in following:}}
   <li><a href="{{=f.followee.id}}">{{=f.followee.first_name}} {{=f.followee.last_name}}</a></li>
-{{pass}}
-
+  {{pass}}
+  </ul>
