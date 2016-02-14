@@ -89,3 +89,17 @@ CREATE TABLE profile(
     last_name CHAR(512)
 );
 success!
+timestamp: 2016-02-13T23:49:04.644151
+CREATE TABLE fo(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    followee INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2016-02-13T23:50:36.406521
+CREATE TABLE follows(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    followee INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
