@@ -25,13 +25,11 @@ def profile():
 
 @auth.requires_login()
 def follow():
-    """
-    if request.env.method != 'POST':
+    if request.env.request_method != 'POST':
         raise HTTP(400)
-    """
     tablename = 'follows'
-    to_follow = db.auth_user(request.args(0))
-    action = request.args(1)
+    to_follow = db.auth_user(request.vars['user'])
+    action = request.vars['action']
     # FIXME ensure that to-follow user exists!
     if to_follow is not None:
         if action == 'follow':
