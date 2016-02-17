@@ -30,6 +30,28 @@ def profile_manage():
 def profile():
     return redirect(URL('default','users/'+str(auth.user.id)))
 
+@auth.requires_login()
+def follow():
+    if request.env.request_method != 'POST':
+        raise HTTP(400)
+    tablename = 'follows'
+    to_follow = db.auth_user(request.vars['user'])
+    action = request.vars['action']
+    # FIXME ensure that to-follow user exists!
+    if to_follow is not None:
+        if action == 'follow':
+            db[tablename].insert(follower=auth.user.id, followee=to_follow)
+            return HTTP(200)
+        elif action == 'unfollow':
+            db(db.follows.follower==auth.user.id,
+               db.follows.followee==to_follow).delete()
+            return HTTP(200)
+        else:
+            return HTTP(400)
+        return HTTP(200)
+    else:
+        raise HTTP(400)
+
 def users():
     """
     Display user profile

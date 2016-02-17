@@ -1,13 +1,86 @@
 {{extend 'layout.html'}}
 
+  {{
+  def is_following(follower, followee):
+    if db((db.follows.follower == follower) & (db.follows.followee == followee)).count():
+      return True
+    else:
+      return False
+  pass
+
+  def follow_url(follower, followee):
+    return URL('default', 'follow')
+
+  pass
+  }}
+
+
 <h1>{{=name}}</h1>
+<!-- TODO change this -->
+{{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
+  <button id="btn-unfollow" class="hidden" onclick="unfollow()">Unfollow</button>
+  <button id="btn-follow" onclick="follow()">Follow</button>
+{{ pass }}
+
 <h2>Itineraries</h2>
 <h2>Followers</h2>
+<ul id="followers-list">
 {{for f in followers:}}
-  <li><a href="{{=f.follower.id}}">{{=f.follower.first_name}} {{=f.follower.last_name}}</a></li>
-{{pass}}
-<h2>Following</h2>
-{{for f in following:}}
+  <li {{ if auth.user is not None and f.follower.id == auth.user.id: }} id="follower-me" {{ pass }}>
+    <a href="{{=f.follower.id}}">{{=f.follower.first_name}} {{=f.follower.last_name}}</a>
+  </li>
+  {{pass}}
+</ul>
+  <h2>Following</h2>
+  <ul id="following-list">
+  {{for f in following:}}
   <li><a href="{{=f.followee.id}}">{{=f.followee.first_name}} {{=f.followee.last_name}}</a></li>
-{{pass}}
+  {{pass}}
+  </ul>
 
+  {{ block page_js }}
+  {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
+
+  <script type="text/javascript">
+    var following = 'True' == '{{=is_following(auth.user.id, request.args[0])}}';
+
+    var btn_unfollow = $("#btn-unfollow");
+    var btn_follow = $("#btn-follow");
+
+    function toggle_buttons() {
+      btn_follow.toggleClass("hidden");
+      btn_unfollow.toggleClass("hidden");
+    }
+
+    if (following) {
+      toggle_buttons();
+    }
+
+    function unfollow() {
+      follow_submit("unfollow", function() {toggle_buttons(); $('#follower-me').remove();});
+    }
+
+    function follow() {
+      function successful_follow() {
+        toggle_buttons();
+        var li = "<li id='follower-me'><a href='{{=auth.user.id}}'>{{=auth.user.first_name}} {{=auth.user.last_name}}</a></li>";
+        $("#followers-list").prepend(li);
+      }
+      follow_submit("follow", successful_follow());
+    }
+
+    function follow_submit(action, success_action) {
+    $.ajax({
+      url: "{{=follow_url(auth.user.id, request.args[0])}}",
+      method: "POST",
+      dataType: "text",
+      data: { action : action, user : {{=request.args[0]}} },
+      success: success_action,
+      error: function (a, b, c) {
+        alert(c);
+      }
+    })
+    };
+  </script>
+  {{ pass }}
+  {{ end page_js }}

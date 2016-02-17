@@ -89,6 +89,7 @@ CREATE TABLE profile(
     last_name CHAR(512)
 );
 success!
+<<<<<<< HEAD
 timestamp: 2016-02-10T00:13:07.972945
 CREATE TABLE profile_create(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38098,4 +38099,19 @@ success!
 success!
 success!
 success!
+=======
+timestamp: 2016-02-13T23:49:04.644151
+CREATE TABLE fo(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    followee INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+success!
+timestamp: 2016-02-13T23:50:36.406521
+CREATE TABLE follows(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    follower INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  ,
+    followee INTEGER REFERENCES auth_user (id) ON DELETE CASCADE  
+);
+>>>>>>> d0c0e7e026a20f70753ec9616703ad6907cd3543
 success!
