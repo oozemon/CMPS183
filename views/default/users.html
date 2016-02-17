@@ -21,9 +21,19 @@
   <button id="btn-unfollow" class="hidden" onclick="unfollow()">Unfollow</button>
   <button id="btn-follow" onclick="follow()">Follow</button>
 {{ pass }}
+<div id="prof_pic" name="prof_pic" title="Profile Picture">
+<img src = {{=URL('default', 'download', args=picture )}} style="width:341px;height:256px;" \>
+</div>
+<div id="profile_description" name="profile_description" title="Profile Description">
+  <p><h3>Description</h3></p>
+  <p>Gender: {{=gender}}</p>
+  <p>Experance: {{=experance}}</p>
+  <p>description: {{=description}}      
+</p>
+</div>
+<h3>Itineraries</h3>
 
-<h2>Itineraries</h2>
-<h2>Followers</h2>
+<h3>Followers</h3>
 <ul id="followers-list">
 {{for f in followers:}}
   <li {{ if auth.user is not None and f.follower.id == auth.user.id: }} id="follower-me" {{ pass }}>
@@ -31,7 +41,7 @@
   </li>
   {{pass}}
 </ul>
-  <h2>Following</h2>
+  <h3>Following</h3>
   <ul id="following-list">
   {{for f in following:}}
   <li><a href="{{=f.followee.id}}">{{=f.followee.first_name}} {{=f.followee.last_name}}</a></li>

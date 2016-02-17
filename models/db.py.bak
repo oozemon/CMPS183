@@ -61,10 +61,17 @@ auth.settings.extra_fields['auth_user']= [
   Field('gender', requires=IS_IN_SET(['Male', 'Female'], error_message='Please choose a category')),
    Field('experance', requires=IS_IN_SET(['Beginner', 'Intermediate', 'Adventurer'], error_message='Please choose a category')),
    Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Please enter a description')),
-   Field('picture', 'upload'),]
+   Field('picture', 'upload'),
+   Field('thumb', 'upload', readable = False)]
+
+
 ## create all tables needed by auth if not custom tables
 auth.define_tables(username=False, signature=False)
+from images import RESIZE
+db.auth_user.picture.requires = RESIZE(200, 200)
 
+from images import THUMB
+db.auth_user.thumbnail.compute = lambda row: THUMB(row.picture, 200, 200)
 ## configure email
 mail = auth.settings.mailer
 mail.settings.server = 'logging' if request.is_local else myconf.take('smtp.server')

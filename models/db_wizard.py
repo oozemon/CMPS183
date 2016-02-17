@@ -21,3 +21,21 @@ db.define_table('follows',
                 Field('follower', 'reference auth_user'),
                 Field('followee', 'reference auth_user')
                 )
+
+db.define_table('des',
+               Field('des_name'),
+               Field('picture_des', 'upload'),
+               Field('description_des', 'text'),
+               Field('tips', 'text', length=256))
+
+db.define_table('up_coming_itinerary',
+               Field('it_name', 'reference des'),
+               Field('des_location'),
+               Field('days_staying', 'double'),
+               Field('description_of_stays', 'text')
+               )
+
+db.define_table('past_itinerary',
+                Field('view_original', 'reference up_coming_itinerary'),
+                Field('past_it_tips', 'text', length=256),
+                Field('past_it_regrets', 'text', length=256))

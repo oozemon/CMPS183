@@ -61,7 +61,10 @@ auth.settings.extra_fields['auth_user']= [
   Field('gender', requires=IS_IN_SET(['Male', 'Female'], error_message='Please choose a category')),
    Field('experance', requires=IS_IN_SET(['Beginner', 'Intermediate', 'Adventurer'], error_message='Please choose a category')),
    Field('description', 'text', requires=IS_NOT_EMPTY(error_message='Please enter a description')),
-   Field('picture', 'upload')]
+   Field('picture', 'upload'),
+   Field('thumb', 'upload', readable = False)]
+
+
 ## create all tables needed by auth if not custom tables
 auth.define_tables(username=False, signature=False)
 

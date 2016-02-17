@@ -61,11 +61,14 @@ def users():
         # TODO handle failure
         user = db.auth_user[request.args(0)]
         name = user.first_name + ' ' + user.last_name
-        followers = db(db.follows.followee==uid).select(db.follows.ALL)
-        following = db(db.follows.follower==uid).select(db.follows.ALL)
-        context = dict(name=name,followers=followers,following=following)
+        followers   = db(db.follows.followee==uid).select(db.follows.ALL)
+        following   = db(db.follows.follower==uid).select(db.follows.ALL)
+        picture     = user.picture
+        gender      = user.gender
+        experance   = user.experance
+        description = user.description
+        context = dict(name=name,followers=followers,following=following,picture=picture,description=description,experance=experance,gender=gender)
         return response.render('default/users.html', context)
     else:
         # TODO do something sensible?
         return redirect(URL('default','index'))
-
