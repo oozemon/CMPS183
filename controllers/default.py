@@ -5,14 +5,14 @@ def user():
 def download(): return response.download(request,db)
 def call(): return service()
 ### end requires
-<<<<<<< HEAD
-def index():    
+#<<<<<<< HEAD
+#def index():    
     #    redirect(URL(c = 'create_profile', f = 'testing'))
-    return dict(message="Mapping the world, for travlers")
-=======
+#    return dict(message="Mapping the world, for travlers")
+#=======
 def index():
     return dict(message="Mapping the world, for travelers")
->>>>>>> 52242180f257d101fbada5911903348870013b0a
+#>>>>>>> 52242180f257d101fbada5911903348870013b0a
 
 def error():
     return dict()
