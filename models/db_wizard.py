@@ -39,3 +39,15 @@ db.define_table('past_itinerary',
                 Field('view_original', 'reference up_coming_itinerary'),
                 Field('past_it_tips', 'text', length=256),
                 Field('past_it_regrets', 'text', length=256))
+
+db.define_table('destinations',
+                Field('place_id', unique=True),
+                )
+
+db.define_table('images',
+                Field('file', 'upload')
+                )
+
+db.define_table('images_destinations',
+                Field('img', 'reference images')
+                Field('dest', 'reference destinations')
