@@ -3,17 +3,29 @@
 {{ block head }}
 <style type="text/css">
   #map {
-  min-height:300px;
-  height:50%; // FIXME this is not working
-  width: 90%;
-  display: block;
+      min-height:300px;
+      height:50%; // FIXME this is not working
+      width: 90%;
+      display: block;
   }
   #search {
-  padding: 0 11px 0 13px;
-  margin-top: 10px;
-  height:32px;
-  text-overflow: ellipsis;
+      padding: 0 11px 0 13px;
+      margin-top: 10px;
+      height:32px;
+      border-radius: 2px 0 0 2px;
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      height: 32px;
+      outline: none;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      
+      text-overflow: ellipsis;
+      border: 1px solid transparent;
   }
+  #search:focus {
+      border-color: grey;
+  }
+
 </style>
 
 {{ end head }}
