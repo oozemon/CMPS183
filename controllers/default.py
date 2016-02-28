@@ -67,7 +67,8 @@ def users():
         gender      = user.gender
         experance   = user.experance
         description = user.description
-        context = dict(name=name,followers=followers,following=following,picture=picture,description=description,experance=experance,gender=gender)
+        itineraries = db(db.itineraries.traveler==user).select(db.itineraries.ALL)
+        context = dict(name=name,followers=followers,following=following,picture=picture,description=description,experance=experance,gender=gender,itineraries=itineraries)
         return response.render('default/users.html', context)
     else:
         # TODO do something sensible?

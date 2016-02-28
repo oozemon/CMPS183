@@ -32,6 +32,12 @@
 </p>
 </div>
 <h3>Itineraries</h3>
+<ul id="itinerary-list">
+  {{for i in itineraries:}}
+  <li>{{= i.destination.name }}</li>
+  <p>{{= i.description }}</p>
+  {{ pass }}
+</ul>
 
 <h3>Followers</h3>
 <ul id="followers-list">
