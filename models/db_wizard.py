@@ -28,41 +28,24 @@ db.define_table('des',
                Field('description_des', 'text'),
                Field('tips', 'text', length=256))
 
-db.define_table('up_coming_itinerary',
-               Field('it_name', 'reference des'),
+db.define_table('all_itinerary',
+               Field('it_name'),
                Field('des_location'),
-               Field('days_staying', 'double'),
-               Field('description_of_stays', 'text')
+#leave des_location as a string for now and then update it to ref after des tables are all set up               
+                Field('days_staying_start', 'date'),
+                Field('days_staying_end', 'date'),
+                Field('description_of_stays', 'text')
                )
 
-db.define_table('past_itinerary',
-                Field('view_original', 'reference up_coming_itinerary'),
-                Field('past_it_tips', 'text', length=256),
-                Field('past_it_regrets', 'text', length=256))
-
-"""
-Sketch of a destinations table using the google api
-Google API's place_id is a unique identifier of a place
-We should also consider saving other metadata eg place name, country, etc..
-"""
-
-db.define_table('destinations',
-                Field('place_id', unique=True),
-                Field('name'),
-                )
+db.define_table('user_itinerary',
+               Field('ownerA', 'reference auth_user'),
+               Field('it_id', 'reference all_itinerary')
+               )
 
 
-db.define_table('itineraries',
-                Field('traveler', 'reference auth_user'),
-                Field('destination', 'reference destinations'),
-                Field('description', 'text')
-                )
 
-db.define_table('images',
-                Field('img_file', 'upload')
-                )
 
-db.define_table('images_destinations',
-                Field('img', 'reference images'),
-                Field('dest', 'reference destinations')
-                )
+#db.define_table('past_itinerary',
+#                Field('view_original', 'reference up_coming_itinerary'),
+#                Field('past_it_tips', 'text', length=256),
+ #               Field('past_it_regrets', 'text', length=256))
