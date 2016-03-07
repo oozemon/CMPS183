@@ -30,19 +30,13 @@ db.define_table('des',
 
 db.define_table('all_itinerary',
                Field('it_name'),
+               Field('ownerA', 'reference auth_user'),
                Field('des_location'),
 #leave des_location as a string for now and then update it to ref after des tables are all set up               
                 Field('days_staying_start', 'date'),
                 Field('days_staying_end', 'date'),
                 Field('description_of_stays', 'text')
                )
-
-db.define_table('user_itinerary',
-               Field('ownerA', 'reference auth_user'),
-               Field('it_id', 'reference all_itinerary')
-               )
-
-
 
 
 #db.define_table('past_itinerary',

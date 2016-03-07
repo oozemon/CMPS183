@@ -39,8 +39,7 @@ def doStuff():
     #d_start_date  = request.vars.d_start_date
     #d_end_date    = request.vars.d_end_date
     #d_description = request.vars.d_description
-    it_id = db.all_itinerary.insert(it_name=request.vars.d_name, des_location=request.vars.d_location)
-    db.user_itinerary.insert(ownerA=auth.user.id, it_id=it_id)
+    db.all_itinerary.insert(it_name=request.vars.d_name, des_location=request.vars.d_location, ownerA=auth.user.id)
     # db.all_itinerary.insert(des_location=request.vars.d_location)
     #db.all_itinerary.insert(days_staying_start=d_start_date)
     #db.all_itinerary.insert(days_staying_end=d_end_date)
@@ -85,7 +84,7 @@ def users():
         gender       = user.gender
         experance    = user.experance
         description  = user.description
-        itineraries = db(db.user_itinerary.ownerA==uid).select(db.all_itinerary.ALL)
+        itineraries = db(db.all_itinerary.ownerA==uid).select(db.all_itinerary.ALL)
         des_location = db(db.all_itinerary.des_location!=None).select(db.all_itinerary.des_location)
         #it_name      = db(db.all_itinerary.it_name.des_name!=None).select()
         days_staying_start   = db(db.all_itinerary.days_staying_start!=None).select(db.all_itinerary.days_staying_start)
