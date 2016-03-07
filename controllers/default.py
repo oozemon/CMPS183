@@ -83,7 +83,7 @@ def users():
         gender       = user.gender
         experance    = user.experance
         description  = user.description
-        it_all       = db.all_itinerary[request.args(0)]
+        itineraries = db(db.user_itinerary.ownerA==uid).select(db.all_itinerary.ALL)
         des_location = db(db.all_itinerary.des_location!=None).select(db.all_itinerary.des_location)
         #it_name      = db(db.all_itinerary.it_name.des_name!=None).select()
         days_staying_start   = db(db.all_itinerary.days_staying_start!=None).select(db.all_itinerary.days_staying_start)
@@ -92,7 +92,7 @@ def users():
         context = dict(name=name,followers=followers,following=following,picture=picture,description=description,
             experance=experance,gender=gender, #it_name=it_name, 
             des_location=des_location,days_staying_start=days_staying_start,
-            days_staying_end=days_staying_end,description_of_stays=description_of_stays)
+            days_staying_end=days_staying_end,description_of_stays=description_of_stays,itineraries=itineraries)
         return response.render('default/users.html', context)
     else:
         # TODO do something sensible?

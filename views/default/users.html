@@ -33,6 +33,11 @@
   </div>
 </div>
 <h3>Itineraries</h3>
+<ul>
+  {{ for i in itineraries: }}
+  <li>{{=i.it_name}}, {{=i.des_location}}</li>
+  {{ pass }}
+</ul>
 <div id="iter_body" name="iter_body" title="body for iter">
 <div id = "target"></div>
 <form id = 'itForm'>
