@@ -24,11 +24,26 @@ def destinations_manage():
 
 @auth.requires_login()
 def profile_manage():
-    return dict(bla="testing")
+    return dict(bla="testing")  
 
 @auth.requires_login()
 def profile():
     return redirect(URL('default','users/'+str(auth.user.id)))
+
+def doStuff():
+    #d_name        = request.vars.d_name
+    #d_location    = request.vars.d_location
+    #print d_name
+    #print d_location
+    #d_start_date  = request.vars.d_start_date
+    #d_end_date    = request.vars.d_end_date
+    #d_description = request.vars.d_description
+    db.all_itinerary.insert(it_name=request.vars.d_name)
+    db.all_itinerary.insert(des_location=request.vars.d_location)
+    #db.all_itinerary.insert(days_staying_start=d_start_date)
+    #db.all_itinerary.insert(days_staying_end=d_end_date)
+    #db.all_itinerary.insert(description_of_stays=d_description)
+    return "jQuery('#target').html('%s');" % str(request.vars.d_name)
 
 @auth.requires_login()
 def follow():
@@ -52,6 +67,7 @@ def follow():
     else:
         raise HTTP(400)
 
+
 def users():
     """
     Display user profile
@@ -61,14 +77,22 @@ def users():
         # TODO handle failure
         user = db.auth_user[request.args(0)]
         name = user.first_name + ' ' + user.last_name
-        followers   = db(db.follows.followee==uid).select(db.follows.ALL)
-        following   = db(db.follows.follower==uid).select(db.follows.ALL)
-        picture     = user.picture
-        gender      = user.gender
-        experance   = user.experance
-        description = user.description
-        itineraries = db(db.itineraries.traveler==user).select(db.itineraries.ALL)
-        context = dict(name=name,followers=followers,following=following,picture=picture,description=description,experance=experance,gender=gender,itineraries=itineraries)
+        followers    = db(db.follows.followee==uid).select(db.follows.ALL)
+        following    = db(db.follows.follower==uid).select(db.follows.ALL)
+        picture      = user.picture
+        gender       = user.gender
+        experance    = user.experance
+        description  = user.description
+        it_all       = db.all_itinerary[request.args(0)]
+        des_location = db(db.all_itinerary.des_location!=None).select(db.all_itinerary.des_location)
+        #it_name      = db(db.all_itinerary.it_name.des_name!=None).select()
+        days_staying_start   = db(db.all_itinerary.days_staying_start!=None).select(db.all_itinerary.days_staying_start)
+        days_staying_end     = db(db.all_itinerary.days_staying_end!=None).select(db.all_itinerary.days_staying_end)
+        description_of_stays = db(db.all_itinerary.description_of_stays!=None).select(db.all_itinerary.description_of_stays)
+        context = dict(name=name,followers=followers,following=following,picture=picture,description=description,
+            experance=experance,gender=gender, #it_name=it_name, 
+            des_location=des_location,days_staying_start=days_staying_start,
+            days_staying_end=days_staying_end,description_of_stays=description_of_stays)
         return response.render('default/users.html', context)
     else:
         # TODO do something sensible?
