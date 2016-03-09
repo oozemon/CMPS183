@@ -4,6 +4,8 @@ def user():
     return dict(form=auth())
 def download(): return response.download(request,db)
 def call(): return service()
+import datetime
+import time
 ### end requires
 #<<<<<<< HEAD
 #def index():    
@@ -30,21 +32,26 @@ def profile_manage():
 def profile():
     return redirect(URL('default','users/'+str(auth.user.id)))
 
-@auth.requires_login()
 def doStuff():
-    #d_name        = request.vars.d_name
-    #d_location    = request.vars.d_location
-    #print d_name
-    #print d_location
-    #d_start_date  = request.vars.d_start_date
-    #d_end_date    = request.vars.d_end_date
-    #d_description = request.vars.d_description
-    db.all_itinerary.insert(it_name=request.vars.d_name, des_location=request.vars.d_location, ownerA=auth.user.id)
-    # db.all_itinerary.insert(des_location=request.vars.d_location)
-    #db.all_itinerary.insert(days_staying_start=d_start_date)
-    #db.all_itinerary.insert(days_staying_end=d_end_date)
-    #db.all_itinerary.insert(description_of_stays=d_description)
-    return "jQuery('#target').html('%s');" % str(request.vars.d_name)
+    current = datetime.datetime.today()
+    index = db.all_itinerary.insert(it_name=request.vars.d_name, des_location=request.vars.d_location,
+     days_staying_start=request.vars.d_start_date,days_staying_end=request.vars.d_end_date,
+     description_of_stays=request.vars.d_description,ownerA=auth.user, date_created=current)
+    return "jQuery('#target').append('<li><a href=\"showIts?arg1=%s&arg2=%s&arg3=%s&arg4=%s&arg5=%s\">%s</a></li>');" % (request.vars.d_name,request.vars.d_location,str(request.vars.d_start_date),str(request.vars.d_end_date),request.vars.d_description,request.vars.d_name)
+    
+def updateItOnView():
+    its = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
+    return "jQuery('#target').append(<div>sdjfodiwfn</div>);"
+    #return dict(its=its)
+
+def showIts():
+    #item        = request.vars
+    name        = request.args(0)
+    location    = request.args(1)
+    start       = request.args(2)
+    end         = request.args(3)
+    des         = request.args(4)
+    return dict(name=name,location=location, start=start, end=end, des=des)
 
 @auth.requires_login()
 def follow():
@@ -78,13 +85,15 @@ def users():
         # TODO handle failure
         user = db.auth_user[request.args(0)]
         name = user.first_name + ' ' + user.last_name
+        its  = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
+        #all_names    = db().select(db.all_itinerary.it_name)
         followers    = db(db.follows.followee==uid).select(db.follows.ALL)
         following    = db(db.follows.follower==uid).select(db.follows.ALL)
         picture      = user.picture
         gender       = user.gender
         experance    = user.experance
         description  = user.description
-        itineraries = db(db.all_itinerary.ownerA==uid).select(db.all_itinerary.ALL)
+        it_all       = db.all_itinerary[request.args(0)]
         des_location = db(db.all_itinerary.des_location!=None).select(db.all_itinerary.des_location)
         #it_name      = db(db.all_itinerary.it_name.des_name!=None).select()
         days_staying_start   = db(db.all_itinerary.days_staying_start!=None).select(db.all_itinerary.days_staying_start)
@@ -93,7 +102,7 @@ def users():
         context = dict(name=name,followers=followers,following=following,picture=picture,description=description,
             experance=experance,gender=gender, #it_name=it_name, 
             des_location=des_location,days_staying_start=days_staying_start,
-            days_staying_end=days_staying_end,description_of_stays=description_of_stays,itineraries=itineraries)
+            days_staying_end=days_staying_end,description_of_stays=description_of_stays, its=its, user=user)
         return response.render('default/users.html', context)
     else:
         # TODO do something sensible?
