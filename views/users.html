@@ -1,0 +1,137 @@
+{{extend 'layout.html'}}
+
+  {{
+  def is_following(follower, followee):
+    if db((db.follows.follower == follower) & (db.follows.followee == followee)).count():
+      return True
+    else:
+      return False
+  pass
+
+  def follow_url(follower, followee):
+    return URL('default', 'follow')
+
+  pass
+  }}
+
+<!--<body onload="checkList()">-->
+<h1>{{=name}}</h1>
+<!-- TODO change this -->
+{{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
+  <button id="btn-unfollow" class="hidden" onclick="unfollow()">Unfollow</button>
+  <button id="btn-follow" onclick="follow()">Follow</button>
+{{ pass }}
+<div id ="main_body" name="main_body" title="etc etc"> 
+  <div id="prof_pic" name="prof_pic" title="Profile Picture">
+    <img src = {{=URL('default', 'download', args=picture )}} style="width:341px;height:256px;" />
+  </div>
+  <div id="profile_description" name="profile_description" title="Profile Description">
+    <p><h3>Description</h3></p>
+    <p>Gender: {{=gender}}</p>
+    <p>Experance: {{=experance}}</p>
+    <p>description: {{=description}}</p>
+  </div>
+</div>
+<h3>Itineraries</h3>
+<!--<script type="text/javascript">
+  function checkList()
+  {
+    ajax('{{=URL('default','updateItOnView')}}', ['blank'], ':eval');
+    return false;
+  }-->
+</script>
+<div id="iter_body" name="iter_body" title="body for iter">
+<div id = "target">
+{{for it in its:}}
+{{if it.ownerA == user.id:}}
+{{=LI(A(it.it_name, _href=URL(c="default",f="showIts", args=[it.it_name,it.des_location,it.days_staying_start,it.days_staying_end,it.description_of_stays])))}}
+{{pass}}
+{{pass}}
+</div>
+<div id = "blank"></div>
+<form id = 'itForm'>
+  <h3>Itinerary Name? </h3> 
+  <input type = "text" name = "d_name" ></input><br>
+  <h3>Location Staying? </h3>
+  <input type = "text" name = "d_location" ></input><br>
+  <h3>Trip starts? </h3>
+  <input type = "date" name = "d_start_date"></input><br>
+  <h3>Trip ends? </h3>
+  <input tpye = "date" name = "d_end_date"></input><br>
+  <h3>Few words or comments about this trip? </h3> 
+  <input type = "text" name = "d_description"></input><br>
+  <input type = "button" value = "Submit" onclick="callAjax()" />
+</form>
+</div>
+<script>
+  function callAjax()
+  {
+    ajax('{{=URL('default','doStuff')}}', ['d_name','d_location', 'd_start_date', 'd_end_date', 'd_description'], ':eval');
+    return false;
+  }
+</script>
+</div>
+
+
+<h3>Followers</h3>
+<ul id="followers-list">
+{{for f in followers:}}
+  <li {{ if auth.user is not None and f.follower.id == auth.user.id: }} id="follower-me" {{ pass }}>
+    <a href="{{=f.follower.id}}">{{=f.follower.first_name}} {{=f.follower.last_name}}</a>
+  </li>
+  {{pass}}
+</ul>
+  <h3>Following</h3>
+  <ul id="following-list">
+  {{for f in following:}}
+  <li><a href="{{=f.followee.id}}">{{=f.followee.first_name}} {{=f.followee.last_name}}</a></li>
+  {{pass}}
+  </ul>
+
+  <!--{{ block page_js }}-->
+  {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
+
+  <script type="text/javascript">
+    var following = 'True' == '{{=is_following(auth.user.id, request.args[0])}}';
+
+    var btn_unfollow = $("#btn-unfollow");
+    var btn_follow = $("#btn-follow");
+
+    function toggle_buttons() {
+      btn_follow.toggleClass("hidden");
+      btn_unfollow.toggleClass("hidden");
+    }
+
+    if (following) {
+      toggle_buttons();
+    }
+
+    function unfollow() {
+      follow_submit("unfollow", function() {toggle_buttons(); $('#follower-me').remove();});
+    }
+
+    function follow() {
+      function successful_follow() {
+        toggle_buttons();
+        var li = "<li id='follower-me'><a href='{{=auth.user.id}}'>{{=auth.user.first_name}} {{=auth.user.last_name}}</a></li>";
+        $("#followers-list").prepend(li);
+      }
+      follow_submit("follow", successful_follow());
+    }
+
+    function follow_submit(action, success_action) {
+    $.ajax({
+      url: "{{=follow_url(auth.user.id, request.args[0])}}",
+      method: "POST",
+      dataType: "text",
+      data: { action : action, user : {{=request.args[0]}} },
+      success: success_action,
+      error: function (a, b, c) {
+        alert(c);
+      }
+    })
+    };
+  </script>
+  {{ pass }}
+  {{ end page_js }}
+  <!--</body>-->
