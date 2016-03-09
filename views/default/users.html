@@ -14,7 +14,7 @@
   pass
   }}
 
-
+<!--<body onload="checkList()">-->
 <h1>{{=name}}</h1>
 <!-- TODO change this -->
 {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
@@ -23,7 +23,7 @@
 {{ pass }}
 <div id ="main_body" name="main_body" title="etc etc"> 
   <div id="prof_pic" name="prof_pic" title="Profile Picture">
-    <img src = {{=URL('default', 'download', args=picture )}} style="width:341px;height:256px;" \>
+    <img src = {{=URL('default', 'download', args=picture )}} style="width:341px;height:256px;" />
   </div>
   <div id="profile_description" name="profile_description" title="Profile Description">
     <p><h3>Description</h3></p>
@@ -33,27 +33,42 @@
   </div>
 </div>
 <h3>Itineraries</h3>
-<ul>
-  {{ for i in itineraries: }}
-  <li>{{=i.it_name}}, {{=i.des_location}}</li>
-  {{ pass }}
-</ul>
+<!--<script type="text/javascript">
+  function checkList()
+  {
+    ajax('{{=URL('default','updateItOnView')}}', ['blank'], ':eval');
+    return false;
+  }-->
+</script>
 <div id="iter_body" name="iter_body" title="body for iter">
-<div id = "target"></div>
+<div id = "target">
+{{for it in its:}}
+{{if it.ownerA == user.id:}}
+{{=LI(A(it.it_name, _href=URL(c="default",f="showIts", args=[it.it_name,it.des_location,it.days_staying_start,it.days_staying_end,it.description_of_stays])))}}
+{{pass}}
+{{pass}}
+</div>
+<div id = "blank"></div>
 <form id = 'itForm'>
+  <h3>Itinerary Name? </h3> 
   <input type = "text" name = "d_name" ></input><br>
+  <h3>Location Staying? </h3>
   <input type = "text" name = "d_location" ></input><br>
+  <h3>Trip starts? </h3>
   <input type = "date" name = "d_start_date"></input><br>
+  <h3>Trip ends? </h3>
   <input tpye = "date" name = "d_end_date"></input><br>
+  <h3>Few words or comments about this trip? </h3> 
   <input type = "text" name = "d_description"></input><br>
   <input type = "button" value = "Submit" onclick="callAjax()" />
 </form>
 </div>
 <script>
-function callAjax(){
-ajax('{{=URL('default','doStuff')}}', ['d_name','d_location', 'd_start_date', 'd_end_date', 'd_description'], ':eval');
-return false;
-}
+  function callAjax()
+  {
+    ajax('{{=URL('default','doStuff')}}', ['d_name','d_location', 'd_start_date', 'd_end_date', 'd_description'], ':eval');
+    return false;
+  }
 </script>
 </div>
 
@@ -73,7 +88,7 @@ return false;
   {{pass}}
   </ul>
 
-  {{ block page_js }}
+  <!--{{ block page_js }}-->
   {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
 
   <script type="text/javascript">
@@ -119,3 +134,4 @@ return false;
   </script>
   {{ pass }}
   {{ end page_js }}
+  <!--</body>-->
