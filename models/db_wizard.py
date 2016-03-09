@@ -12,7 +12,7 @@ db.define_table('t_destinations',
     Field('f_itineraries', type='string',
           label=T('Itineraries')),
     auth.signature,
-    format='%(f_destination_name)s',
+    format='%(f_destination_name)s', 
     migrate=settings.migrate)
 
 db.define_table('t_destinations_archive',db.t_destinations,Field('current_record','reference t_destinations',readable=False,writable=False))
@@ -21,6 +21,7 @@ db.define_table('follows',
                 Field('follower', 'reference auth_user'),
                 Field('followee', 'reference auth_user')
                 )
+
 
 db.define_table('des',
                Field('des_name'),
@@ -35,8 +36,10 @@ db.define_table('all_itinerary',
 #leave des_location as a string for now and then update it to ref after des tables are all set up               
                 Field('days_staying_start', 'date'),
                 Field('days_staying_end', 'date'),
-                Field('description_of_stays', 'text')
+                Field('description_of_stays', 'text'),
+                Field('date_created', 'date')
                )
+
 
 
 #db.define_table('past_itinerary',
