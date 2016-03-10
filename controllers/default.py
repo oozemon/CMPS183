@@ -7,14 +7,12 @@ def call(): return service()
 import datetime
 import time
 ### end requires
-#<<<<<<< HEAD
-#def index():    
-    #    redirect(URL(c = 'create_profile', f = 'testing'))
-#    return dict(message="Mapping the world, for travlers")
-#=======
+
 def index():
-    return dict(message="Mapping the world, for travelers")
-#>>>>>>> 52242180f257d101fbada5911903348870013b0a
+    uid = request.args(0)
+    user2 = db.auth_user[request.args(0)]
+    its2 = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
+    return dict(message="Mapping the world, for travelers", its2=its2, user2=user2)
 
 def error():
     return dict()
