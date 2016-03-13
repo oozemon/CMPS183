@@ -7,5 +7,6 @@ response.menu = [
 (T('Index'),URL('default','index')==URL(),URL('default','index'),[]),
 (T('Destinations'),URL('destinations','index')==URL(),URL('destinations','index'),[]),
 (T('Profile Manage'),URL('default','profile_manage')==URL(),URL('default','profile_manage'),[]),
-(T('Profile'),URL('default','users/'+str(auth.user.id))==URL(),URL('default','users/'+str(auth.user.id)),[])
 ]
+if auth.user:
+    response.menu.append(T('Profile'),URL('default','users/'+str(auth.user.id))==URL(),URL('default','users/'+str(auth.user.id)),[])
