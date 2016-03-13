@@ -9,4 +9,4 @@ response.menu = [
 (T('Profile Manage'),URL('default','profile_manage')==URL(),URL('default','profile_manage'),[]),
 ]
 if auth.user:
-    response.menu.append(T('Profile'),URL('default','users/'+str(auth.user.id))==URL(),URL('default','users/'+str(auth.user.id)),[])
+    response.menu.append((T('Profile'),URL('default','users/'+str(auth.user.id))==URL(),URL('default','users/'+str(auth.user.id)),[]))
