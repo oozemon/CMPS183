@@ -1,0 +1,61 @@
+{{extend 'layout.html'}}
+
+<html>
+	<head>
+		<title>Discover</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+	</head>
+	<body id="top">
+
+		<!-- Header -->
+			<header id="header" class="skel-layers-fixed">
+				<h1><a href="#">TRVLR</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="profile.html">Profile</a></li>
+						<li><a href="#" class="button special">Sign Up</a></li>
+						<li><a href="#" class="button special2">Login</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Main -->
+			<section id="main" class="wrapper style2">
+				<header class="major">
+					<h2>Login</h2>
+					<p>Find other users and destinations</p>
+					<h2>{{=T('Register') if request.args(0) == 'register' else T('Log In') if request.args(0) == 'login' else T(request.args(0).replace('_',' ').title())}}</h2>
+				</header>
+				<div class="container">
+					<section>
+						<section class="special">
+							<div class="box">
+						  <div class="container-1">
+							  <span class="icon"><i class="fa fa-search"></i></span>
+							  <input type="search" id="search" placeholder="Search..." />
+						  </div>
+						</div>
+						</section>
+					</section>
+					<div class="row">
+						<div class="6u">
+
+						</div>
+					</div>
+				</div>
+			</section>
+	</body>
+</html>

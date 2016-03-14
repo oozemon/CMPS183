@@ -1,0 +1,184 @@
+{{extend 'layout.html'}}
+
+
+
+<html>
+	<head>
+		<title>Profile</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+		<noscript>
+			<link rel="stylesheet" href="path/to/your/avgrund.css">
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+	</head>
+	<body id="top">
+  {{
+  def is_following(follower, followee):
+    if db((db.follows.follower == follower) & (db.follows.followee == followee)).count():
+      return True
+    else:
+      return False
+  pass
+
+  def follow_url(follower, followee):
+    return URL('default', 'follow')
+
+  pass
+  }}
+	
+<div id="status">
+</div>
+
+		<!-- Header -->
+			<header id="header" class="skel-layers-fixed">
+				<h1><a href="#">TRVLR</a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="http://127.0.0.1:8000/TRVLR/default/index">Home</a></li>
+						<li><a href="http://127.0.0.1:8000/TRVLR/default/user/">Profile</a></li>
+						<li><a href="http://127.0.0.1:8000/TRVLR/default/user/profile">Edit Profile</a></li>
+					</ul>
+				</nav>
+			</header>
+		<!-- Main -->
+			<section id="main" class="wrapper style1">
+				<div class="container">
+					<div class="row">
+						<div class="4u">
+							<section>
+				
+								<div class ="feature-grid">
+									<div class="feature">
+										<h3 align = "90px">{{=name}}</h3>
+										<div class="roundedImage"><img src = {{=URL('default', 'download', args=picture )}} style="width:200px;height:224px;" /> </div>										<ul class="actions">
+										<br>
+											{{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
+												<button id="btn-unfollow"  class="hidden button alt" onclick="unfollow()">Unfollow</button>
+												<button id="btn-follow" class="button alt" onclick="follow()">Follow</button>
+											{{ pass }}
+										</ul>
+									</div>	
+								</div>
+							</section>
+							<section>
+								<h3>Trips</h3>
+								<ul class="actions">
+									<li><a href="http://127.0.0.1:8000/TRVLR/default/maketrip" class="button alt">Create Trip</a></li>
+								</ul>
+							</section>
+						</div>
+						<div class="8u skel-cell-important">
+							<section>
+								<h2 align = "center">Following Users Feed</h2>
+							 <p>Update feed with Ajax call, I have script available new trips and followed users upcoming trips will show up here. If the user is signed in, it will list their trips and the users following trips, if not signed in, then list just the user view trips</P>	
+							</section>
+						</div>
+					</div>
+					<hr class="major" />
+					<div class="row">
+						<div class="6u">
+							<section class="special">
+								<h3>Followers</h3>
+									<ul id="followers-list">
+										{{for f in followers:}}
+										<li {{ if auth.user is not None and f.follower.id == auth.user.id: }} id="follower-me" {{ pass }}>
+											<a href="{{=f.follower.id}}">{{=f.follower.first_name}} {{=f.follower.last_name}}</a>
+										</li>
+										{{pass}}
+									</ul>
+							</section>
+						</div>
+						<div class="6u">
+							<section class="special">
+								<h3>Following</h3>
+									<ul id="following-list">
+										{{for f in following:}}
+											<li><a href="{{=f.followee.id}}">{{=f.followee.first_name}} {{=f.followee.last_name}}</a></li>
+										{{pass}}
+									</ul>
+							</section>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<div class="row double">
+						<div class="6u">
+							<div class="row collapse-at-2">
+							</div>
+						</div>
+						<div class="6u">
+							<h2>Connect with us</h2>
+							<ul class="icons">
+								<li><a href="https://twitter.com/oozemon" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="https://www.facebook.com/usman.zahid.3781" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+							</ul>
+						</div>
+					</div>
+					<ul class="copyright">
+						<li>&copy; TRVLR. All rights reserved 2016.</li>
+					</ul>
+				</div>
+			</footer>
+	</body>
+</html>
+  <!--{{ block page_js }}-->
+  {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
+
+  <script type="text/javascript">
+    var following = 'True' == '{{=is_following(auth.user.id, request.args[0])}}';
+
+    var btn_unfollow = $("#btn-unfollow");
+    var btn_follow = $("#btn-follow");
+
+    function toggle_buttons() {
+      btn_follow.toggleClass("hidden");
+      btn_unfollow.toggleClass("hidden");
+    }
+
+    if (following) {
+      toggle_buttons();
+    }
+
+    function unfollow() {
+      follow_submit("unfollow", function() {toggle_buttons(); $('#follower-me').remove();});
+    }
+
+    function follow() {
+      function successful_follow() {
+        toggle_buttons();
+        var li = "<li id='follower-me'><a href='{{=auth.user.id}}'>{{=auth.user.first_name}} {{=auth.user.last_name}}</a></li>";
+        $("#followers-list").prepend(li);
+      }
+      follow_submit("follow", successful_follow());
+    }
+
+    function follow_submit(action, success_action) {
+    $.ajax({
+      url: "{{=follow_url(auth.user.id, request.args[0])}}",
+      method: "POST",
+      dataType: "text",
+      data: { action : action, user : {{=request.args[0]}} },
+      success: success_action,
+      error: function (a, b, c) {
+        alert(c);
+      }
+    })
+    };
+  </script>
+  {{ pass }}
+  {{ end page_js }}
+  <!--</body>-->
