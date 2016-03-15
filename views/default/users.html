@@ -54,18 +54,17 @@
   <input tpye = "date" name = "d_end_date"></input><br>
   <h3>Few words or comments about this trip? </h3> 
   <input type = "text" name = "d_description"></input><br>
-  <input type = "button" value = "Submit" onclick="callAjax()" />
+  <input type = "button" value = "submit" onclick="submit_itinerary()" />
 </form>
 </div>
-<script>
-  function callAjax()
+<script type="text/javascript">
+  function submit_itinerary()
   {
     ajax('{{=URL('default','doStuff')}}', ['d_name','d_location', 'd_start_date', 'd_end_date', 'd_description'], ':eval');
     return false;
   }
 </script>
 </div>
-
 
 <h3>Followers</h3>
 <ul id="followers-list">
@@ -81,10 +80,6 @@
   <li><a href="{{=f.followee.id}}">{{=f.followee.first_name}} {{=f.followee.last_name}}</a></li>
   {{pass}}
   </ul>
-
-
-
-
 
   {{ block page_js }}
   {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
