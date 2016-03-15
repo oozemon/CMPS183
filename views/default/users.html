@@ -14,7 +14,7 @@
   pass
   }}
 
-<!--<body onload="checkList()">-->
+
 <h1>{{=name}}</h1>
 <!-- TODO change this -->
 {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
@@ -33,13 +33,6 @@
   </div>
 </div>
 <h3>Itineraries</h3>
-<!--<script type="text/javascript">
-  function checkList()
-  {
-    ajax('{{=URL('default','updateItOnView')}}', ['blank'], ':eval');
-    return false;
-  }-->
-</script>
 <div id="iter_body" name="iter_body" title="body for iter">
 <div id = "target">
 {{for it in its:}}
@@ -53,7 +46,8 @@
   <h3>Itinerary Name? </h3> 
   <input type = "text" name = "d_name" ></input><br>
   <h3>Location Staying? </h3>
-  <input type = "text" name = "d_location" ></input><br>
+  <input type = "text" id="place_search" name = "d_location" ></input><br>
+  <input type="hidden" id="place_id_input" name="d_place_id" />
   <h3>Trip starts? </h3>
   <input type = "date" name = "d_start_date"></input><br>
   <h3>Trip ends? </h3>
@@ -88,7 +82,11 @@
   {{pass}}
   </ul>
 
-  <!--{{ block page_js }}-->
+
+
+
+
+  {{ block page_js }}
   {{ if auth.user is not None and str(auth.user.id) != request.args[0]: }}
 
   <script type="text/javascript">
@@ -132,6 +130,32 @@
     })
     };
   </script>
+
   {{ pass }}
+
+
+
+<script type="text/javascript">
+
+    function init() {
+      var searchBox = new google.maps.places.SearchBox(document.getElementById("place_search"));
+
+      searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+          return;
+        }
+
+        // assume the first place is the right place
+        // set the place_id in the form for when we make the ajax call
+        $("#place_id_input").val(places[0].place_id);
+      });
+    }
+
+</script>
+
+  <script async defer type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0QYcS8xa58aJSIh1hl-emz3YyIn_mct4&signed_in=true&callback=init&libraries=places" />
+
   {{ end page_js }}
-  <!--</body>-->
