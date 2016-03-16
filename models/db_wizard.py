@@ -36,10 +36,11 @@ db.define_table('place_names',
                 )
 
 db.define_table('all_itinerary',
+                Field('it_name'),
                 Field('ownerA', 'reference auth_user'),
                 Field('place', 'reference place_names'),
-                Field('days_staying_start', 'date'),
-                Field('days_staying_end', 'date'),
+                Field('days_staying_start', 'date', requires=IS_DATE('%m/%d/%Y')),
+                Field('days_staying_end', 'date', requires=IS_DATE('%m/%d/%Y')),
                 Field('description_of_stays', 'text'),
                 Field('date_created', 'date')
                )
