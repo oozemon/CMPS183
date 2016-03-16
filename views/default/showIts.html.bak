@@ -1,0 +1,8 @@
+<html>
+    <div id = "itView">
+        <h3>Name: </h3>{{=name}}
+        <h3>Location: </h3>{{=location}}
+        <h3>Vaction Starts: </h3>{{=start}}
+        <h3>Vacation Ends:</h3>{{=end}}
+    </div>
+</html>

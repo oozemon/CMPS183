@@ -43,3 +43,21 @@
     </div>
   </div>
 </section>
+
+<h3><center>Check out current trips our users plan to travel: </center></h3><br />
+<center>
+  <div id = "placeToUpdate">{{for it in its2:}}
+    {{=LI(A(it.it_name, _href=URL(c="default",f="showIts", args=[it.it_name,it.des_location,it.days_staying_start,it.days_staying_end,it.description_of_stays])))}}
+    {{pass}}
+    {{pass}}
+  </div>
+</center> 
+<!--       <script>
+           setInterval(function(){updateShowingIts()}, 10000);
+           function updateShowingIts()
+           {
+               ajax('{{=URL('default','updateItOnView')}}', ['placeToUpdate'], ':eval');
+               return false;
+           }           
+       </script> -->
+

@@ -41,17 +41,114 @@
       <ul class="actions">
 	<li><a href="{{=URL('default','maketrip')}}" class="button alt">Create Trip</a></li>
       </ul>
+      
     </section>
     {{ pass }}
   </div>
   <div class="8u skel-cell-important">
     <section>
       <h2 align = "center">Trips</h2>
-      <p>Update feed with Ajax call, I have script available new trips and followed users upcoming trips will show up here. If the user is signed in, it will list their trips and the users following trips, if not signed in, then list just the user view trips</P>	
+      <div id = "target">
+        {{for it in its:}}
+        {{if it.ownerA == user.id:}}
+        {{=LI(A(it.it_name, _href=URL(c="default",f="showIts", args=[it.it_name,it.des_location,it.days_staying_start,it.days_staying_end,it.description_of_stays])))}}
+        {{pass}}
+        {{pass}}
+      </div>
+      <div id = "blank"></div>
+      <form id = 'itForm'>
+        <h3>Itinerary Name </h3> 
+        <input type = "text" id = "d_name" name = "d_name" ></input><br>
+        <h3>Location Staying </h3>
+        <input type = "text" id = "d_location"  name = "d_location" ></input><br>
+        <h3>Trip starts <small>(yyyy-mm-dd)</small></h3>
+        <input type = "text" id = "d_start_date" name = "d_start_date"></input><br>
+        <h3>Trip ends <small>(yyyy-mm-dd)</small></h3>
+        <input type = "text" id = "d_end_date" name = "d_end_date"></input><br>
+        <h3>Few words or comments about this trip</h3> 
+        <input type = "text" id = "d_description" name = "d_description"></input><br>
+        <input type = "button" id = "toSub" value = "Submit" onclick="callAjax()" />
+      </form>
+  </div>
+  
     </section>
   </div>
 </div>
 
+<script>
+
+/*
+  function validate()
+  {
+    if( jQuery("#d_name").val().length       > 0  &&
+     jQuery("#d_location").val().length      > 0  && 
+     jQuery("#d_start_date").val().length    > 0  && 
+     jQuery("#d_end_date").val().length      > 0  && 
+     jQuery("#d_description").val().length   > 0  )
+      jQuery("#toSub").prop("disabled", false)
+    else
+      jQuery("#toSub").prop("disabled", true)
+
+  }
+
+  jQuery("#d_start_date").focusout(function()
+  {
+    var checkMe     = jQuery("#d_start_date").val();
+    var regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
+    var results     = regExToTest.test(checkMe);
+    if( !results )
+     alert("Not the proper date format");
+  });
+
+  jQuery("#d_end_date").focusout(function()
+  {
+    var checkMe     = jQuery("#d_end_date").val();
+    var regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
+    var results     = regExToTest.test(checkMe);
+    if( !results )
+     alert("Not the proper date format");
+  });
+*/
+
+  function callAjax()
+  {
+    var nameCheck  = false;
+    var locCheck   = false;
+    var startCheck = false;
+    var endCheck   = false;
+    var decCheck   = false;
+
+    if(jQuery("#d_name").val().length > 0)
+      nameCheck = true;
+    if(jQuery("#d_location").val().length > 0)
+      locCheck = true;
+    if(jQuery("#d_description").val().length > 0)  
+      decCheck=true;
+
+      var checkMe     = jQuery("#d_start_date").val();
+      var regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
+      var results     = regExToTest.test(checkMe);
+      if( results )
+        startCheck = true;
+
+      checkMe     = jQuery("#d_end_date").val();
+      regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
+      results     = regExToTest.test(checkMe);
+      if( results )
+        endCheck = true;
+
+    if( nameCheck && locCheck && startCheck && endCheck && decCheck )
+    {
+      ajax('{{=URL('default','doStuff')}}', ['d_name','d_location', 'd_start_date', 'd_end_date', 'd_description'], ':eval');
+      return false;
+    }
+    else
+    {
+      alert("Fields are not properly inputed");
+      return false;
+    }
+  }
+</script>
 
 <hr class="major" />
 
