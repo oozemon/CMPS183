@@ -32,12 +32,13 @@ db.define_table('des',
 # Map Google API place_id to the human-readable place name
 db.define_table('place_names',
                 Field('place_id', required=True, notnull=True, unique=True),
-                Field('name', required=True, notnull=True)
+                Field('p_name', required=True)
                 )
 
 db.define_table('all_itinerary',
                 Field('it_name'),
                 Field('ownerA', 'reference auth_user'),
+                Field('it_name'),
                 Field('place', 'reference place_names'),
                 Field('days_staying_start', 'date', requires=IS_DATE('%m/%d/%Y')),
                 Field('days_staying_end', 'date', requires=IS_DATE('%m/%d/%Y')),
