@@ -36,14 +36,6 @@
 	</div>	
       </div>
     </section>
-    {{ if auth.user is not None and str(auth.user.id) == request.args[0]: }}
-    <section>
-      <ul class="actions">
-	<li><a href="{{=URL('default','maketrip')}}" class="button alt">Create Trip</a></li>
-      </ul>
-      
-    </section>
-    {{ pass }}
   </div>
   <div class="8u skel-cell-important">
     <section>
@@ -54,6 +46,7 @@
         {{pass}} 
       </div>
       <div id = "blank"></div>
+      {{ if auth.user is not None and str(auth.user.id) == request.args[0]: }}
       <form id = 'itForm'>
         <input type="hidden" id="place_id_input" name="d_place_id" />
         <h3>Itinerary Name </h3> 
@@ -68,6 +61,7 @@
         <input type = "text" id = "d_description" name = "d_description"></input><br>
         <input type = "button" id = "toSub" value = "Submit" onclick="callAjax()" />
       </form>
+      {{ pass }}
   </div>
   
     </section>
