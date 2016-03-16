@@ -47,6 +47,7 @@
       </div>
       <div id = "blank"></div>
       {{ if auth.user is not None and str(auth.user.id) == request.args[0]: }}
+      <hr />
       <form id = 'itForm'>
         <input type="hidden" id="place_id_input" name="d_place_id" />
         <h3>Itinerary Name </h3> 
