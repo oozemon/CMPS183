@@ -23,7 +23,7 @@
 	  <h3 align="90px">{{=name}}</h3>
           <div class="roundedImage">
             {{ if user.picture is None: }}
-            <img src="http://placehold.it/90x90"/>
+            <img src="http://placehold.it/100x100?text=trvlr"/>
             {{ else: }}
             <img src="{{=URL('default', 'download', args=picture )}}"/>
             {{ pass }}
