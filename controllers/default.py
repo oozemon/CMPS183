@@ -36,18 +36,9 @@ def destinations_manage():
     form = SQLFORM.smartgrid(db.t_destinations,onupdate=auth.archive)
     return locals()
 
-
-@auth.requires_login()
-def profile_manage():
-    return dict(bla="testing")  
-
 @auth.requires_login()
 def profile():
     return redirect(URL('default','users/'+str(auth.user.id)))
-
-# ChIJrxNRX7IFzkwRCR5iKVZC-HA
-
-
 
 @auth.requires_login()
 def doStuff():
