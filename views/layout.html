@@ -68,7 +68,9 @@
       <h1><a href="{{=URL('default','index')}}">TRVLR</a></h1>
       <nav id="nav">
 	<ul>
-	  <li><a href="{{=URL('default','index')}}">Home</a></li>
+          {{ if auth.user: }}
+	  <li><a href="{{=URL('default', 'feed')}}">Feed</a></li>
+          {{ pass }}
 	  <li><a href="{{=URL('default','profile')}}">Profile</a></li>
           {{ if auth.user: }}
 	  <li><a href="{{=URL('default', 'user/logout')}}">Logout</a></li>

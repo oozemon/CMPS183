@@ -96,6 +96,12 @@ def follow():
     else:
         raise HTTP(400)
 
+@auth.requires_login()
+def feed():
+    following = [row.followee for row in db(db.follows.follower==auth.user).select(db.follows.followee)]
+    its = db(db.all_itinerary.ownerA.belongs(following)).select(orderby=~db.all_itinerary.date_created)
+    return dict(its=its)
+
 
 def users():
     """
