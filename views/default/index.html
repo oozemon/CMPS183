@@ -1,12 +1,57 @@
 {{extend 'layout.html'}}
 
-       <h1><center>{{=message}}</center></h1><br>
-       <h3><center>Check out current trips our users plan to travel: </center></h3><br>
-<center><div id = "placeToUpdate">{{for it in its2:}}
-{{=LI(A(it.it_name, _href=URL(c="default",f="showIts", args=[it.it_name,it.des_location,it.days_staying_start,it.days_staying_end,it.description_of_stays])))}}
-{{pass}}
+{{ block header }}
+    <section id="banner">
+      <div class="inner">
+	<h2>Welcome to TRVLR</h2>
+	<p>Mapping the world, for travelers.</p>
+	<ul class="actions">
+	  <li><a href="{{=URL('default', 'user/register')}}" class="button big special">Sign Up</a></li>
+	  <li><a href="#one" class="button big alt">Learn More</a></li>
+	</ul>
+      </div>
+    </section>
+{{ end header }}
+
+<section id="one" class="wrapper style1">
+  <header class="major">
+    <h2>Start your next adventure today</h2>
+  </header>
+  <div class="container">
+    <div class="row">
+      <div class="4u">
+	<section class="special box">
+	  <i class="icon fa-area-chart major"></i>
+	  <h3>Meet up with friends </h3>
+	  <p>Stay connected and updated with all your friends on the other side of the globe with the touch of a button. </p>
+	</section>
+      </div>
+      <div class="4u">
+	<section class="special box">
+	  <i class="icon fa-refresh major"></i>
+	  <h3>Share experiences</h3>
+	  <p>Share trip itineraries with other explorers while reading others to help plan your next adventure.</p>
+	</section>
+      </div>
+      <div class="4u">
+	<section class="special box">
+	  <i class="icon fa-cog major"></i>
+	  <h3>Reinvent traveling</h3>
+	  <p>Transform your next trip by sharing tips and itinerary ideas.</p>
+	</section>
+      </div>
+    </div>
+  </div>
+</section>
+
+<h3><center>Check out current trips our users plan to travel: </center></h3><br />
+<center>
+  <div id = "placeToUpdate">{{for it in its2:}}
+    {{=LI(A(it.it_name, _href=URL(c="default",f="showIts", args=[it.it_name,it.des_location,it.days_staying_start,it.days_staying_end,it.description_of_stays])))}}
     {{pass}}
-    </div></center> 
+    {{pass}}
+  </div>
+</center> 
 <!--       <script>
            setInterval(function(){updateShowingIts()}, 10000);
            function updateShowingIts()
@@ -15,3 +60,4 @@
                return false;
            }           
        </script> -->
+
