@@ -45,6 +45,10 @@ def profile_manage():
 def profile():
     return redirect(URL('default','users/'+str(auth.user.id)))
 
+# ChIJrxNRX7IFzkwRCR5iKVZC-HA
+
+
+
 @auth.requires_login()
 def doStuff():
     it_name = request.vars.d_name
@@ -52,33 +56,32 @@ def doStuff():
     place_id = request.vars.d_place_id
     if db(db.place_names.place_id==place_id).select().first() is None:
         # No one has traveled here.. we need to save this location
-        place_name_row = db.place_names.insert(place_id=place_id, name=it_loc)
+        print it_loc
+        place_name_row = db.place_names.insert(place_id=place_id, p_name=it_loc)
     else:
         place_name_row = db(db.place_names.place_id==place_id).select().first()
     index = db.all_itinerary.insert(it_name=it_name, 
-                                    des_location=it_loc,
                                     place=place_name_row,
                                     days_staying_start=request.vars.d_start_date,
                                     days_staying_end=request.vars.d_end_date,
                                     description_of_stays=request.vars.d_description,
                                     ownerA=auth.user, 
                                     date_created=datetime.datetime.today())
+    return "jQuery('#target').append('<li><a href=\"../showIts/%d\">%s</a></li>');" % (index.id, index.it_name)
 
-    return "jQuery('#target').append('<li><a href=\"showIts?arg1=%s&arg2=%s&arg3=%s&arg4=%s&arg5=%s\">%s</a></li>');" % (request.vars.d_name,request.vars.d_location,str(request.vars.d_start_date),str(request.vars.d_end_date),request.vars.d_description,request.vars.d_name)
-    
+"""    
 def updateItOnView():
     its = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
-
     return "jQuery('#target').append('<li><a href=\"showIts?arg1=%s&arg2=%s&arg3=%s&arg4=%s&arg5=%s\">%s</a></li>');" % (its.it_name,its.des_location,str(its.days_staying_start),str(its.days_staying_end),its.description_of_stays,its.it_name)
     #return dict(its=its)
+"""
 
 def showIts():
-    #item        = request.vars
-    name        = request.args(0)
-    start       = request.args(1)
-    end         = request.args(2)
-    des         = request.args(3)
-    return dict(name=name,location='', start=start, end=end, des=des)
+    it = db.all_itinerary[request.args(0)]
+    if it is None:
+        return HTTP(400)
+    else:
+        return dict(it=it)
 
 @auth.requires_login()
 def follow():
@@ -111,8 +114,12 @@ def users():
         uid = request.args(0)
         # TODO handle failure
         user = db.auth_user[request.args(0)]
+        if user is None:
+            return HTTP(400)
+        else:
+            pass
         name = user.first_name + ' ' + user.last_name
-        its  = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
+        its  = db(db.all_itinerary.ownerA==user).select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
         #all_names    = db().select(db.all_itinerary.it_name)
         followers    = db(db.follows.followee==uid).select(db.follows.ALL)
         following    = db(db.follows.follower==uid).select(db.follows.ALL)

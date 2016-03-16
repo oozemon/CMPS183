@@ -1,9 +1,14 @@
-<html>
-    <div id = "itView">
-        <h3>Name: </h3>{{=name}}
-        <h3>Location: </h3>{{=location}}
-        <h3>Vaction Starts: </h3>{{=start}}
-        <h3>Vacation Ends:</h3>{{=end}}
-        <h3>description:</h3>{{=des}}
-    </div>
-</html>
+{{extend 'layout.html'}}
+
+<div id = "itView">
+  <h2>{{=it.it_name}}</h2>
+    <a href="{{=URL('default','users',args=[it.ownerA.id])}}">
+      {{=it.ownerA.first_name}} {{=it.ownerA.last_name}}
+    </a>
+    <hr />
+  <h2>{{=it.place.p_name}}</h2>
+  <h3><small>Vaction Starts: </small>{{=it.days_staying_start}}</h3>
+  <h3><small>Vacation Ends:</small>{{=it.days_staying_end}}</h3>
+  <p>{{=it.description_of_stays}}</p>
+</div>
+

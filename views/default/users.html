@@ -1,5 +1,5 @@
 {{extend 'layout.html'}}
-n
+
   {{
   def is_following(follower, followee):
     if db((db.follows.follower == follower) & (db.follows.followee == followee)).count():
@@ -50,18 +50,16 @@ n
       <h2 align = "center">Trips</h2>
       <div id = "target">
         {{for it in its:}}
-        {{if it.ownerA == user.id:}}
-        {{=LI(A(it.it_name, _href=URL(c="default",f="showIts", args=[it.it_name,it.des_location,it.days_staying_start,it.days_staying_end,it.description_of_stays])))}}
-        {{pass}}
-        {{pass}}
+        {{=LI(A(it.it_name, _href=URL('default','showIts',args=[it.id])))}}
+        {{pass}} 
       </div>
       <div id = "blank"></div>
       <form id = 'itForm'>
-
+        <input type="hidden" id="place_id_input" name="d_place_id" />
         <h3>Itinerary Name </h3> 
         <input type = "text" id = "d_name" name = "d_name" ></input><br>
         <h3>Location Staying </h3>
-        <input type = "text" id = "d_location"  name = "d_location" ></input><br>
+        <input type = "text" id = "d_location"  name = "d_location" /><br />
         <h3>Trip starts <small>(yyyy-mm-dd)</small></h3>
         <input type = "text" id = "d_start_date" name = "d_start_date"></input><br>
         <h3>Trip ends <small>(yyyy-mm-dd)</small></h3>
@@ -108,7 +106,7 @@ n
 
     if( nameCheck && locCheck && startCheck && endCheck && decCheck )
     {
-      ajax('{{=URL('default','doStuff')}}', ['d_name','d_location', 'd_start_date', 'd_end_date', 'd_description'], ':eval');
+      ajax('{{=URL('default','doStuff')}}', ['d_name','d_location','d_start_date', 'd_end_date', 'd_description','d_place_id' ], ':eval');
       return false;
     }
     else
@@ -195,22 +193,21 @@ n
 <script type="text/javascript">
 
   function init() {
-      var searchBox = new google.maps.places.SearchBox(document.getElementById("places_changed"));
+      var searchBox = new google.maps.places.SearchBox(document.getElementById("d_location"));
 
       searchBox.addListener('places_changed', function() {
         var places = searchBox.getPlaces();
-
+  
         if (places.length == 0) {
           return;
         }
-
         // assume the first place is the right place
         // set the place_id in the form for when we make the ajax call
         $("#place_id_input").val(places[0].place_id);
       });
     }
 
-</script> -->
+</script>
 
   <script async defer type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0QYcS8xa58aJSIh1hl-emz3YyIn_mct4&signed_in=true&callback=init&libraries=places" />
