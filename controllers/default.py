@@ -110,7 +110,7 @@ def users():
         else:
             pass
         name = user.first_name + ' ' + user.last_name
-        its  = db(db.all_itinerary.ownerA==user).select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
+        its  = db(db.all_itinerary.ownerA==user).select(db.all_itinerary.ALL, orderby=~db.all_itinerary.date_created)
         #all_names    = db().select(db.all_itinerary.it_name)
         followers    = db(db.follows.followee==uid).select(db.follows.ALL)
         following    = db(db.follows.follower==uid).select(db.follows.ALL)
