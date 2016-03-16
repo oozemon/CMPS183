@@ -1,14 +1,15 @@
-{{extend 'layout.html'}}
+{{ extend 'layout.html' }}
 
+{{ for it in its: }}
+<hr />
 <div id = "itView">
   <h2>{{=it.it_name}}</h2>
     <a href="{{=URL('default','users',args=[it.ownerA.id])}}">
       {{=it.ownerA.first_name}} {{=it.ownerA.last_name}}
     </a>
-    <hr />
   <h2>{{=it.place.p_name}}</h2>
   <h3><small>Vaction Starts: </small>{{=it.days_staying_start}}</h3>
   <h3><small>Vacation Ends:</small>{{=it.days_staying_end}}</h3>
   <p>{{=it.description_of_stays}}</p>
 </div>
-
+{{ pass }}

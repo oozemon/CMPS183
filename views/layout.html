@@ -32,7 +32,7 @@
     <link rel="stylesheet" href="{{=URL('static','css/remodal.css')}}" />
     <link rel="stylesheet" href="{{=URL('static','css/remodal-default-theme.css')}}" />
         <link rel="stylesheet" href="{{=URL('static','css/avgrund.css')}}" />
-
+        
     <script src="{{=URL('static', 'js/jquery.js')}}" />
     <script src="{{=URL('static', 'js/html5shiv.js')}}" />
     <script src="{{=URL('static', 'js/init.js')}}" /> 
@@ -40,16 +40,24 @@
     <script src="{{=URL('static', 'js/skel-layers.min.js')}}" />
 
 
-<!-- TODO no script? -->
-    
+
+        <style type="text/css">
+          h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{line-height:1.5}
+          
+          h1 small,h2 small,h3 small,h4 small,h5 small,h6 small,.h1 small,.h2 small,.h3 small,.h4 small,.h5 small,.h6 small,h1 .small,h2 .small,h3 .small,h4 .small,h5 .small,h6 .small,.h1 .small,.h2 .small,.h3 .small,.h4 .small,.h5 .small,.h6 .small{font-line-height:70%;color:#98978b;}
+
+        </style>
+
+
     <!-- All JavaScript at the bottom, except for Modernizr which enables
          HTML5 elements & feature detects -->
     <script src="{{=URL('static','js/modernizr-2.8.3.min.js')}}"></script>
+
     <!--[if lt IE 9]>
         <script src="{{=URL('static','js/respond-1.4.2.min.js')}}"></script>
         <![endif]-->
     <!-- Favicons -->
-<!--    {{include 'web2py_ajax.html'}} --> <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
+    {{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
     {{block head}}{{end}}
   </head>
   <body id="top">
@@ -60,7 +68,9 @@
       <h1><a href="{{=URL('default','index')}}">TRVLR</a></h1>
       <nav id="nav">
 	<ul>
-	  <li><a href="{{=URL('default','index')}}">Home</a></li>
+          {{ if auth.user: }}
+	  <li><a href="{{=URL('default', 'feed')}}">Feed</a></li>
+          {{ pass }}
 	  <li><a href="{{=URL('default','profile')}}">Profile</a></li>
           {{ if auth.user: }}
 	  <li><a href="{{=URL('default', 'user/logout')}}">Logout</a></li>
