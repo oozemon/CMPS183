@@ -76,6 +76,18 @@
 
 <script type="text/javascript">
 
+/*
+  function validate()
+  {
+    if( jQuery("#d_name").val().length       > 0  &&
+     jQuery("#d_location").val().length      > 0  && 
+     jQuery("#d_start_date").val().length    > 0  && 
+     jQuery("#d_end_date").val().length      > 0  && 
+     jQuery("#d_description").val().length   > 0  )
+      jQuery("#toSub").prop("disabled", false)
+    else
+      jQuery("#toSub").prop("disabled", true)
+  }
   jQuery("#d_start_date").focusout(function()
   {
     var checkMe     = jQuery("#d_start_date").val();
@@ -84,7 +96,6 @@
     if( !results )
      alert("Not the proper date format");
   });
-
   jQuery("#d_end_date").focusout(function()
   {
     var checkMe     = jQuery("#d_end_date").val();
@@ -97,10 +108,10 @@
   function checkProperDate(check, checkMe)
   {
         if(check) 
-        {
-          var month = checkMe.substring(0,2);
-          var day   = checkMe.substring(3,5);
-          var year  = checkMe.substring(6,checkMe.length);
+        { 
+          var month = checkMe.substring(5,7);
+          var day   = checkMe.substring(8,checkMe.length);
+          var year  = checkMe.substring(0,4);
           var dayInt     = parseInt(day);
           var monthInt   = parseInt(month);
           var yearInt    = parseInt(year)
@@ -139,10 +150,10 @@
     var endCheck   = true;
     var decCheck   = false;
     var checkMeDateStart      = jQuery("#d_start_date").val();
-    var checkProperFormStart  = /(\d\d)-(\d\d)-(\d\d\d\d)/g;
+    var checkProperFormStart  = /(\d\d\d\d)-(\d\d)-(\d\d)/g;
     var formCheckResultsStart = checkProperFormStart.test(checkMeDateStart);
     var checkMeDateEnd        = jQuery("#d_end_date").val();
-    var checkProperFormEnd    = /(\d\d)-(\d\d)-(\d\d\d\d)/g;
+    var checkProperFormEnd    = /(\d\d\d\d)-(\d\d)-(\d\d)/g;
     var formCheckResultsEnd   = checkProperFormEnd.test(checkMeDateEnd);
 
     if(jQuery("#d_name").val().length > 0)
@@ -155,8 +166,8 @@
     startCheck = checkProperDate(formCheckResultsStart, checkMeDateStart);
     endCheck   = checkProperDate(formCheckResultsEnd, checkMeDateEnd);
 
-    alert(startCheck);
-    alert(endCheck);
+    console.log('valid starting date: '+startCheck);
+    console.log('valid ending date: '+endCheck);
 
     if( nameCheck && locCheck && startCheck && endCheck && decCheck )
     {
