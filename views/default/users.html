@@ -112,10 +112,10 @@
   function checkProperDate(check, checkMe)
   {
         if(check) 
-        {
-          var month = checkMe.substring(0,2);
-          var day   = checkMe.substring(3,5);
-          var year  = checkMe.substring(6,checkMe.length);
+        { 
+          var month = checkMe.substring(5,7);
+          var day   = checkMe.substring(8,checkMe.length);
+          var year  = checkMe.substring(0,4);
           var dayInt     = parseInt(day);
           var monthInt   = parseInt(month);
           var yearInt    = parseInt(year)
@@ -154,10 +154,10 @@
     var endCheck   = true;
     var decCheck   = false;
     var checkMeDateStart      = jQuery("#d_start_date").val();
-    var checkProperFormStart  = /(\d\d)-(\d\d)-(\d\d\d\d)/g;
+    var checkProperFormStart  = /(\d\d\d\d)-(\d\d)-(\d\d)/g;
     var formCheckResultsStart = checkProperFormStart.test(checkMeDateStart);
     var checkMeDateEnd        = jQuery("#d_end_date").val();
-    var checkProperFormEnd    = /(\d\d)-(\d\d)-(\d\d\d\d)/g;
+    var checkProperFormEnd    = /(\d\d\d\d)-(\d\d)-(\d\d)/g;
     var formCheckResultsEnd   = checkProperFormEnd.test(checkMeDateEnd);
 
     if(jQuery("#d_name").val().length > 0)
