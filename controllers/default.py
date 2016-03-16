@@ -45,13 +45,27 @@ def profile_manage():
 def profile():
     return redirect(URL('default','users/'+str(auth.user.id)))
 
+@auth.requires_login()
 def doStuff():
-    current = datetime.datetime.today()
-    index = db.all_itinerary.insert(it_name=request.vars.d_name, des_location=request.vars.d_location,
-     days_staying_start=request.vars.d_start_date,days_staying_end=request.vars.d_end_date,
-     description_of_stays=request.vars.d_description,ownerA=auth.user, date_created=current)
-    return "jQuery('#target').append('<li><a href=\"showIts?arg1=%s&arg2=%s&arg3=%s&arg4=%s&arg5=%s\">%s</a></li>');" % (request.vars.d_name,request.vars.d_location,str(request.vars.d_start_date),str(request.vars.d_end_date),str(request.vars.d_description),request.vars.d_name)
-     
+    it_name = request.vars.d_name
+    it_loc  = request.vars.d_location
+    place_id = request.vars.d_place_id
+    if db(db.place_names.place_id==place_id).select().first() is None:
+        # No one has traveled here.. we need to save this location
+        place_name_row = db.place_names.insert(place_id=place_id, name=it_loc)
+    else:
+        place_name_row = db(db.place_names.place_id==place_id).select().first()
+    index = db.all_itinerary.insert(it_name=it_name, 
+                                    des_location=it_loc,
+                                    place=place_name_row,
+                                    days_staying_start=request.vars.d_start_date,
+                                    days_staying_end=request.vars.d_end_date,
+                                    description_of_stays=request.vars.d_description,
+                                    ownerA=auth.user, 
+                                    date_created=datetime.datetime.today())
+
+    return "jQuery('#target').append('<li><a href=\"showIts?arg1=%s&arg2=%s&arg3=%s&arg4=%s&arg5=%s\">%s</a></li>');" % (request.vars.d_name,request.vars.d_location,str(request.vars.d_start_date),str(request.vars.d_end_date),request.vars.d_description,request.vars.d_name)
+    
 def updateItOnView():
     its = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
 
@@ -61,11 +75,10 @@ def updateItOnView():
 def showIts():
     #item        = request.vars
     name        = request.args(0)
-    location    = request.args(1)
-    start       = request.args(2)
-    end         = request.args(3)
-    des         = request.args(4)
-    return dict(name=name,location=location, start=start, end=end, des=des)
+    start       = request.args(1)
+    end         = request.args(2)
+    des         = request.args(3)
+    return dict(name=name,location='', start=start, end=end, des=des)
 
 @auth.requires_login()
 def follow():
@@ -108,14 +121,14 @@ def users():
         experance    = user.experance
         description  = user.description
         it_all       = db.all_itinerary[request.args(0)]
-        des_location = db(db.all_itinerary.des_location!=None).select(db.all_itinerary.des_location)
+#        des_location = db(db.all_itinerary.des_location!=None).select(db.all_itinerary.des_location)
         #it_name      = db(db.all_itinerary.it_name.des_name!=None).select()
         days_staying_start   = db(db.all_itinerary.days_staying_start!=None).select(db.all_itinerary.days_staying_start)
         days_staying_end     = db(db.all_itinerary.days_staying_end!=None).select(db.all_itinerary.days_staying_end)
         description_of_stays = db(db.all_itinerary.description_of_stays!=None).select(db.all_itinerary.description_of_stays)
         context = dict(name=name,followers=followers,following=following,picture=picture,description=description,
             experance=experance,gender=gender, #it_name=it_name, 
-            des_location=des_location,days_staying_start=days_staying_start,
+            des_location='',days_staying_start=days_staying_start,
             days_staying_end=days_staying_end,description_of_stays=description_of_stays, its=its, user=user)
         return response.render('default/users.html', context)
     else:

@@ -29,10 +29,15 @@ db.define_table('des',
                Field('description_des', 'text'),
                Field('tips', 'text', length=256))
 
+# Map Google API place_id to the human-readable place name
+db.define_table('place_names',
+                Field('place_id', required=True, notnull=True, unique=True),
+                Field('name', required=True, notnull=True)
+                )
+
 db.define_table('all_itinerary',
-               Field('it_name'),
-               Field('ownerA', 'reference auth_user'),
-               Field('des_location'),             
+                Field('ownerA', 'reference auth_user'),
+                Field('place', 'reference place_names'),
                 Field('days_staying_start', 'date'),
                 Field('days_staying_end', 'date'),
                 Field('description_of_stays', 'text'),

@@ -1,5 +1,5 @@
 {{extend 'layout.html'}}
-
+n
   {{
   def is_following(follower, followee):
     if db((db.follows.follower == follower) & (db.follows.followee == followee)).count():
@@ -57,6 +57,7 @@
       </div>
       <div id = "blank"></div>
       <form id = 'itForm'>
+
         <h3>Itinerary Name </h3> 
         <input type = "text" id = "d_name" name = "d_name" ></input><br>
         <h3>Location Staying </h3>
@@ -75,40 +76,8 @@
   </div>
 </div>
 
-<script>
+<script type="text/javascript">
 
-/*
-  function validate()
-  {
-    if( jQuery("#d_name").val().length       > 0  &&
-     jQuery("#d_location").val().length      > 0  && 
-     jQuery("#d_start_date").val().length    > 0  && 
-     jQuery("#d_end_date").val().length      > 0  && 
-     jQuery("#d_description").val().length   > 0  )
-      jQuery("#toSub").prop("disabled", false)
-    else
-      jQuery("#toSub").prop("disabled", true)
-
-  }
-
-  jQuery("#d_start_date").focusout(function()
-  {
-    var checkMe     = jQuery("#d_start_date").val();
-    var regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
-    var results     = regExToTest.test(checkMe);
-    if( !results )
-     alert("Not the proper date format");
-  });
-
-  jQuery("#d_end_date").focusout(function()
-  {
-    var checkMe     = jQuery("#d_end_date").val();
-    var regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
-    var results     = regExToTest.test(checkMe);
-    if( !results )
-     alert("Not the proper date format");
-  });
-*/
 
   function callAjax()
   {
@@ -226,7 +195,7 @@
 <script type="text/javascript">
 
   function init() {
-      var searchBox = new google.maps.places.SearchBox(document.getElementById("place_search"));
+      var searchBox = new google.maps.places.SearchBox(document.getElementById("places_changed"));
 
       searchBox.addListener('places_changed', function() {
         var places = searchBox.getPlaces();
@@ -241,7 +210,7 @@
       });
     }
 
-</script>
+</script> -->
 
   <script async defer type="text/javascript"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0QYcS8xa58aJSIh1hl-emz3YyIn_mct4&signed_in=true&callback=init&libraries=places" />
