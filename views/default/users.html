@@ -51,23 +51,90 @@
 <div id = "blank"></div>
 <form id = 'itForm'>
   <h3>Itinerary Name? </h3> 
-  <input type = "text" name = "d_name" ></input><br>
+  <input type = "text" id = "d_name" name = "d_name" ></input><br>
   <h3>Location Staying? </h3>
-  <input type = "text" name = "d_location" ></input><br>
-  <h3>Trip starts? </h3>
-  <input type = "date" name = "d_start_date"></input><br>
-  <h3>Trip ends? </h3>
-  <input tpye = "date" name = "d_end_date"></input><br>
-  <h3>Few words or comments about this trip? </h3> 
-  <input type = "text" name = "d_description"></input><br>
-  <input type = "button" value = "Submit" onclick="callAjax()" />
+  <input type = "text" id = "d_location"  name = "d_location" ></input><br>
+  <h3>Trip starts? (format yr-month-date ex. 2016-03-04)</h3>
+  <input type = "date" id = "d_start_date" name = "d_start_date"></input><br>
+  <h3>Trip ends? (format yr-month-date ex. 2016-03-04)</h3>
+  <input tpye = "date" id = "d_end_date" name = "d_end_date"></input><br>
+  <h3>Few words or comments about this trip?</h3> 
+  <input type = "text" id = "d_description" name = "d_description"></input><br>
+  <input type = "button" id = "toSub" value = "Submit" onclick="callAjax()" />
 </form>
 </div>
 <script>
+
+/*
+  function validate()
+  {
+    if( jQuery("#d_name").val().length       > 0  &&
+     jQuery("#d_location").val().length      > 0  && 
+     jQuery("#d_start_date").val().length    > 0  && 
+     jQuery("#d_end_date").val().length      > 0  && 
+     jQuery("#d_description").val().length   > 0  )
+      jQuery("#toSub").prop("disabled", false)
+    else
+      jQuery("#toSub").prop("disabled", true)
+
+  }
+
+  jQuery("#d_start_date").focusout(function()
+  {
+    var checkMe     = jQuery("#d_start_date").val();
+    var regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
+    var results     = regExToTest.test(checkMe);
+    if( !results )
+     alert("Not the proper date format");
+  });
+
+  jQuery("#d_end_date").focusout(function()
+  {
+    var checkMe     = jQuery("#d_end_date").val();
+    var regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
+    var results     = regExToTest.test(checkMe);
+    if( !results )
+     alert("Not the proper date format");
+  });
+*/
+
   function callAjax()
   {
-    ajax('{{=URL('default','doStuff')}}', ['d_name','d_location', 'd_start_date', 'd_end_date', 'd_description'], ':eval');
-    return false;
+    var nameCheck  = false;
+    var locCheck   = false;
+    var startCheck = false;
+    var endCheck   = false;
+    var decCheck   = false;
+
+    if(jQuery("#d_name").val().length > 0)
+      nameCheck = true;
+    if(jQuery("#d_location").val().length > 0)
+      locCheck = true;
+    if(jQuery("#d_description").val().length > 0)  
+      decCheck=true;
+
+      var checkMe     = jQuery("#d_start_date").val();
+      var regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
+      var results     = regExToTest.test(checkMe);
+      if( results )
+        startCheck = true;
+
+      checkMe     = jQuery("#d_end_date").val();
+      regExToTest = /(\d\d\d\d)-([0][1-9]|[1][0-2])-([0][1-9]|[1][0-2])/g;
+      results     = regExToTest.test(checkMe);
+      if( results )
+        endCheck = true;
+
+    if( nameCheck && locCheck && startCheck && endCheck && decCheck )
+    {
+      ajax('{{=URL('default','doStuff')}}', ['d_name','d_location', 'd_start_date', 'd_end_date', 'd_description'], ':eval');
+      return false;
+    }
+    else
+    {
+      alert("Fields are not properly inputed");
+      return false;
+    }
   }
 </script>
 </div>

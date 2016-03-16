@@ -9,10 +9,24 @@ import time
 ### end requires
 
 def index():
-    uid = request.args(0)
-    user2 = db.auth_user[request.args(0)]
-    its2 = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
-    return dict(message="Mapping the world, for travelers", its2=its2, user2=user2)
+    uid     = request.args(0)
+    user2   = db.auth_user[request.args(0)]
+    its2    = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
+    listOfAllUsers = db().select(db.auth_user.ALL, orderby=db.auth_user.first_name)
+    #funcForBar()
+    return dict(message="Mapping the world, for travelers", its2=its2, user2=user2, listOfAllUsers=listOfAllUsers,
+        searching=funcForBar())
+
+def funcForBar():
+    partialstr = request.vars.partialstr if request.vars else None
+    query      = db.auth_user.first_name
+    auth_user   = db(query).select(db.auth_user.first_name)
+    items = []
+
+    for (i,auth_user) in enumerate(auth_user):
+        items.append(DIV(A(auth_user.first_name, _id="res%s"%i, _href="#", _onclick="copyToBox($('#res%s').html())"%i), _id="resultLiveSearch"))
+
+    return TAG[''](*items)
 
 def error():
     return dict()
@@ -21,6 +35,7 @@ def error():
 def destinations_manage():
     form = SQLFORM.smartgrid(db.t_destinations,onupdate=auth.archive)
     return locals()
+
 
 @auth.requires_login()
 def profile_manage():
@@ -35,11 +50,12 @@ def doStuff():
     index = db.all_itinerary.insert(it_name=request.vars.d_name, des_location=request.vars.d_location,
      days_staying_start=request.vars.d_start_date,days_staying_end=request.vars.d_end_date,
      description_of_stays=request.vars.d_description,ownerA=auth.user, date_created=current)
-    return "jQuery('#target').append('<li><a href=\"showIts?arg1=%s&arg2=%s&arg3=%s&arg4=%s&arg5=%s\">%s</a></li>');" % (request.vars.d_name,request.vars.d_location,str(request.vars.d_start_date),str(request.vars.d_end_date),request.vars.d_description,request.vars.d_name)
-    
+    return "jQuery('#target').append('<li><a href=\"showIts?arg1=%s&arg2=%s&arg3=%s&arg4=%s&arg5=%s\">%s</a></li>');" % (request.vars.d_name,request.vars.d_location,str(request.vars.d_start_date),str(request.vars.d_end_date),str(request.vars.d_description),request.vars.d_name)
+     
 def updateItOnView():
     its = db().select(db.all_itinerary.ALL, orderby=db.all_itinerary.date_created)
-    return "jQuery('#target').append(<div>sdjfodiwfn</div>);"
+
+    return "jQuery('#target').append('<li><a href=\"showIts?arg1=%s&arg2=%s&arg3=%s&arg4=%s&arg5=%s\">%s</a></li>');" % (its.it_name,its.des_location,str(its.days_staying_start),str(its.days_staying_end),its.description_of_stays,its.it_name)
     #return dict(its=its)
 
 def showIts():

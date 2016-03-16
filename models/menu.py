@@ -5,8 +5,8 @@ response.meta.keywords = settings.keywords
 response.meta.description = settings.description
 response.menu = [
 (T('Home'),URL('default','index')==URL(),URL('default','index'),[]),
-(T('Destinations'),URL('destinations','index')==URL(),URL('destinations','index'),[]),
-(T('Profile Manage'),URL('default','profile_manage')==URL(),URL('default','profile_manage'),[]),
+(T('Destinations'),URL('destinations','index')==URL(),URL('destinations','index'),[])
+#(T('Profile Manage'),URL('default','profile_manage')==URL(),URL('default','profile_manage'),[]),
 ]
 if auth.user:
     response.menu.append((T('Profile'),URL('default','users/'+str(auth.user.id))==URL(),URL('default','users/'+str(auth.user.id)),[]))
